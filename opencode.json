@@ -13,6 +13,7 @@
           "name": "Qwen3.6 35B-A3B IQ3_S 64k (local)",
           "limit": {
             "context": 65536,
+            "input": 48000,
             "output": 16384
           },
           "options": {
@@ -38,6 +39,7 @@
           "name": "Qwen3.6 35B-A3B Heretic IQ3_XS 64k (local, uncensored)",
           "limit": {
             "context": 65536,
+            "input": 48000,
             "output": 16384
           },
           "options": {
@@ -63,6 +65,15 @@
     }
   },
   "model": "local/qwen3.6-35b-a3b",
+  "compaction": {
+    "prune": true,
+    "reserved": 8000,
+    "preserve_recent_tokens": 12000
+  },
+  "tool_output": {
+    "max_lines": 800,
+    "max_bytes": 24000
+  },
   "lsp": {
     "ruff": {
       "command": [
@@ -113,7 +124,7 @@
         "task": true,
         "todowrite": true
       },
-      "steps": 100
+      "steps": 200
     },
     "implementer": {
       "description": "Executes one specific, already-decided code change. Reports FILES/CHANGES/VERIFIED/ISSUES.",
@@ -149,7 +160,7 @@
         "todowrite": false,
         "webfetch": false
       },
-      "steps": 100,
+      "steps": 30,
       "permission": {
         "skill": {
           "*": "allow",
@@ -157,5 +168,8 @@
         }
       }
     }
-  }
+  },
+  "plugin": [
+    "./node_modules/harness-memory/dist/plugin/index.js"
+  ]
 }
