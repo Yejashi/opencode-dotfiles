@@ -1,0 +1,157 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "local": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local LLM",
+      "options": {
+        "baseURL": "http://localhost:8080/v1",
+        "apiKey": "YOUR_API_KEY_HERE"
+      },
+      "models": {
+        "qwen3.6-35b-a3b": {
+          "name": "Qwen3.6 35B-A3B IQ3_S 64k (local)",
+          "limit": {
+            "context": 65536,
+            "output": 16384
+          },
+          "options": {
+            "reasoningEffort": "medium",
+            "temperature": 0.7
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "deep": {
+              "reasoningEffort": "high"
+            },
+            "off": {
+              "reasoningEffort": "none"
+            }
+          }
+        },
+        "qwen3.6-35b-a3b-heretic": {
+          "name": "Qwen3.6 35B-A3B Heretic IQ3_XS 64k (local, uncensored)",
+          "limit": {
+            "context": 65536,
+            "output": 16384
+          },
+          "options": {
+            "temperature": 0.7,
+            "reasoningEffort": "medium"
+          },
+          "variants": {
+            "low": {
+              "reasoningEffort": "low"
+            },
+            "balanced": {
+              "reasoningEffort": "medium"
+            },
+            "deep": {
+              "reasoningEffort": "high"
+            },
+            "off": {
+              "reasoningEffort": "none"
+            }
+          }
+        }
+      }
+    }
+  },
+  "model": "local/qwen3.6-35b-a3b",
+  "lsp": {
+    "ruff": {
+      "command": [
+        "ruff",
+        "server"
+      ],
+      "extensions": [
+        ".py",
+        ".pyi"
+      ]
+    }
+  },
+  "agent": {
+    "raw": {
+      "description": "Unfiltered chat/creative writing. No coding-agent system prompt, no tools.",
+      "mode": "primary",
+      "model": "local/qwen3.6-35b-a3b-heretic",
+      "prompt": "{file:./prompts/raw.md}",
+      "tools": {
+        "bash": false,
+        "edit": false,
+        "write": false,
+        "read": false,
+        "grep": false,
+        "glob": false,
+        "list": false,
+        "patch": false,
+        "todowrite": false,
+        "todoread": false,
+        "webfetch": false,
+        "task": false
+      }
+    },
+    "orchestrate": {
+      "description": "Plans and delegates; never edits. Use for large multi-file work that would otherwise fill the context window.",
+      "mode": "primary",
+      "model": "local/qwen3.6-35b-a3b",
+      "prompt": "{file:./prompts/orchestrate.md}",
+      "tools": {
+        "bash": false,
+        "edit": false,
+        "write": false,
+        "patch": false,
+        "read": false,
+        "webfetch": false,
+        "glob": true,
+        "grep": true,
+        "task": true,
+        "todowrite": true
+      },
+      "steps": 100
+    },
+    "implementer": {
+      "description": "Executes one specific, already-decided code change. Reports FILES/CHANGES/VERIFIED/ISSUES.",
+      "mode": "subagent",
+      "model": "local/qwen3.6-35b-a3b",
+      "prompt": "{file:./prompts/implementer.md}",
+      "tools": {
+        "read": true,
+        "write": true,
+        "edit": true,
+        "patch": true,
+        "glob": true,
+        "grep": true,
+        "bash": true,
+        "task": false,
+        "todowrite": false,
+        "webfetch": false
+      },
+      "steps": 100
+    },
+    "tester": {
+      "description": "Runs commands and reports pass/fail. Never edits files.",
+      "mode": "subagent",
+      "model": "local/qwen3.6-35b-a3b",
+      "prompt": "{file:./prompts/tester.md}",
+      "tools": {
+        "bash": true,
+        "read": true,
+        "glob": true,
+        "grep": true,
+        "write": false,
+        "edit": false,
+        "patch": false,
+        "task": false,
+        "todowrite": false,
+        "webfetch": false
+      },
+      "steps": 100
+    }
+  }
+}
