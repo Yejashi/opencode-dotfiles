@@ -6,7 +6,7 @@
       "name": "Local LLM",
       "options": {
         "baseURL": "http://localhost:8080/v1",
-        "apiKey": "YOUR_API_KEY_HERE"
+        "apiKey": "E66IYzoam-GmNQ5a50y-6Wa7fF207CcWYn2cEhCJxyk"
       },
       "models": {
         "qwen3.6-35b-a3b": {
@@ -93,13 +93,13 @@
         "todowrite": false,
         "todoread": false,
         "webfetch": false,
-        "task": false
+        "task": false,
+        "skill": false
       }
     },
     "orchestrate": {
       "description": "Plans and delegates; never edits. Use for large multi-file work that would otherwise fill the context window.",
       "mode": "primary",
-      "model": "local/qwen3.6-35b-a3b",
       "prompt": "{file:./prompts/orchestrate.md}",
       "tools": {
         "bash": false,
@@ -118,7 +118,6 @@
     "implementer": {
       "description": "Executes one specific, already-decided code change. Reports FILES/CHANGES/VERIFIED/ISSUES.",
       "mode": "subagent",
-      "model": "local/qwen3.6-35b-a3b",
       "prompt": "{file:./prompts/implementer.md}",
       "tools": {
         "read": true,
@@ -137,7 +136,6 @@
     "tester": {
       "description": "Runs commands and reports pass/fail. Never edits files.",
       "mode": "subagent",
-      "model": "local/qwen3.6-35b-a3b",
       "prompt": "{file:./prompts/tester.md}",
       "tools": {
         "bash": true,
@@ -151,7 +149,13 @@
         "todowrite": false,
         "webfetch": false
       },
-      "steps": 100
+      "steps": 100,
+      "permission": {
+        "skill": {
+          "*": "allow",
+          "opencode-ecosystem": "deny"
+        }
+      }
     }
   }
 }

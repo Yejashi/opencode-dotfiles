@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+  "theme": "ayu-dark",
+  "attention": {
+    "enabled": true,
+    "notifications": true,
+    "sound": false
+  },
+  "keybinds": {
+    "session_toggle_timestamps": "<leader>d",
+    "app_toggle_file_context": "<leader>f",
+    "diff_open": "<leader>v",
+    "scrollbar_toggle": "<leader>k"
+  }
+}

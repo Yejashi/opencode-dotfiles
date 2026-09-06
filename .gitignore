@@ -1,3 +1,7 @@
 node_modules
 package-lock.json
 bun.lock
+# opencode backup files
+opencode.json.bak-*
+opencode.json.preoutput
+tui.bak-*
