@@ -11,7 +11,8 @@ One `llama-server` process in **router mode** serves every model on
 `/home/yejashi/local-ai/router/models.ini`.
 
 The single fact that shapes everything here: the GPU has **16304 MiB** and each
-Qwen3.6 quant is **~13 GiB**, so exactly one model is resident at a time.
+model is capped at **13 GiB** of VRAM (IQ4_XS, with part of its expert weights
+in system RAM via `n-cpu-moe`), so exactly one model is resident at a time.
 
 <!-- BEGIN GENERATED INDEX -->
 
@@ -23,7 +24,7 @@ Each entry below is a file in `/home/yejashi/.config/opencode/skill/local-llm-op
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/build-llama-cpp.md`
 - **Capture the exact prompt the model received** — use when: the model behaves oddly, ignores instructions, refuses, or you need to measure how large a system prompt actually is
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/debug-prompt-logging.md`
-- **models.ini keys and why each is set** — use when: editing the router preset, adding a model, or tuning context, sampling, KV cache, or idle behaviour
+- **models.ini keys and why each is set** — use when: editing the router preset, adding a model, or tuning context, sampling, KV cache, VRAM use, or idle behaviour
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/models-ini-reference.md`
 - **A local model refuses or deflects** — use when: an uncensored or abliterated model still refuses, gives hedged non-answers, or behaves differently than it does outside OpenCode
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/refusals-and-system-prompts.md`
@@ -33,7 +34,7 @@ Each entry below is a file in `/home/yejashi/.config/opencode/skill/local-llm-op
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/service-control.md`
 - **Switch which model is served** — use when: changing models from the OpenCode picker, a model id 404s, the wrong model answers, or you want to know what is loaded right now
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/swap-models.md`
-- **VRAM budget and what to do when a model will not fit** — use when: a model fails to load, output collapses to a few tokens per second, you are choosing a quant, or you are adding a third model
+- **VRAM budget and what to do when a model will not fit** — use when: a model fails to load, output collapses to a few tokens per second, you are choosing a quant or n-cpu-moe value, or you are adding a model
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/vram-budget.md`
 
 <!-- END GENERATED INDEX -->

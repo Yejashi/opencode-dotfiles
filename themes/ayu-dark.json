@@ -29,229 +29,61 @@
     "ayuBorder": "#1B1F29"
   },
   "theme": {
-    "primary": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "secondary": {
-      "dark": "ayuEntity",
-      "light": "ayuEntity"
-    },
-    "accent": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "error": {
-      "dark": "ayuError",
-      "light": "ayuError"
-    },
-    "warning": {
-      "dark": "ayuKeyword",
-      "light": "ayuKeyword"
-    },
-    "success": {
-      "dark": "ayuAdded",
-      "light": "ayuAdded"
-    },
-    "info": {
-      "dark": "ayuTag",
-      "light": "ayuTag"
-    },
-    "text": {
-      "dark": "ayuFg",
-      "light": "ayuUiFg"
-    },
-    "textMuted": {
-      "dark": "ayuUiFg",
-      "light": "ayuGutter"
-    },
-    "background": {
-      "dark": "ayuBg",
-      "light": "ayuFg"
-    },
-    "backgroundPanel": {
-      "dark": "ayuPanelBg",
-      "light": "ayuGutter"
-    },
-    "backgroundElement": {
-      "dark": "ayuEditorBg",
-      "light": "ayuUiFg"
-    },
-    "border": {
-      "dark": "ayuBorder",
-      "light": "ayuGutter"
-    },
-    "borderActive": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "borderSubtle": {
-      "dark": "ayuBorder",
-      "light": "ayuGutter"
-    },
-    "diffAdded": {
-      "dark": "ayuAdded",
-      "light": "ayuAdded"
-    },
-    "diffRemoved": {
-      "dark": "ayuRemoved",
-      "light": "ayuRemoved"
-    },
-    "diffContext": {
-      "dark": "ayuComment",
-      "light": "ayuComment"
-    },
-    "diffHunkHeader": {
-      "dark": "ayuUiFg",
-      "light": "ayuUiFg"
-    },
-    "diffHighlightAdded": {
-      "dark": "ayuAdded",
-      "light": "ayuAdded"
-    },
-    "diffHighlightRemoved": {
-      "dark": "ayuRemoved",
-      "light": "ayuRemoved"
-    },
-    "diffAddedBg": {
-      "dark": "#1a2618",
-      "light": "#e4f0fb"
-    },
-    "diffRemovedBg": {
-      "dark": "#2a1a1a",
-      "light": "#fbe4e4"
-    },
-    "diffContextBg": {
-      "dark": "ayuEditorBg",
-      "light": "ayuGutter"
-    },
-    "diffLineNumber": {
-      "dark": "ayuGutter",
-      "light": "ayuUiFg"
-    },
-    "diffAddedLineNumberBg": {
-      "dark": "#1a2618",
-      "light": "#e4f0fb"
-    },
-    "diffRemovedLineNumberBg": {
-      "dark": "#2a1a1a",
-      "light": "#fbe4e4"
-    },
-    "markdownText": {
-      "dark": "ayuFg",
-      "light": "ayuUiFg"
-    },
-    "markdownHeading": {
-      "dark": "ayuKeyword",
-      "light": "ayuKeyword"
-    },
-    "markdownLink": {
-      "dark": "ayuEntity",
-      "light": "ayuEntity"
-    },
-    "markdownLinkText": {
-      "dark": "ayuTag",
-      "light": "ayuTag"
-    },
-    "markdownCode": {
-      "dark": "ayuString",
-      "light": "ayuString"
-    },
-    "markdownBlockQuote": {
-      "dark": "ayuComment",
-      "light": "ayuComment"
-    },
-    "markdownEmph": {
-      "dark": "ayuMarkup",
-      "light": "ayuMarkup"
-    },
-    "markdownStrong": {
-      "dark": "ayuFunc",
-      "light": "ayuFunc"
-    },
-    "markdownHorizontalRule": {
-      "dark": "ayuBorder",
-      "light": "ayuGutter"
-    },
-    "markdownListItem": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "markdownListEnumeration": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "markdownImage": {
-      "dark": "ayuConstant",
-      "light": "ayuConstant"
-    },
-    "markdownImageText": {
-      "dark": "ayuString",
-      "light": "ayuString"
-    },
-    "markdownCodeBlock": {
-      "dark": "ayuFg",
-      "light": "ayuUiFg"
-    },
-    "syntaxComment": {
-      "dark": "ayuComment",
-      "light": "ayuComment"
-    },
-    "syntaxKeyword": {
-      "dark": "ayuKeyword",
-      "light": "ayuKeyword"
-    },
-    "syntaxFunction": {
-      "dark": "ayuFunc",
-      "light": "ayuFunc"
-    },
-    "syntaxVariable": {
-      "dark": "ayuTag",
-      "light": "ayuTag"
-    },
-    "syntaxString": {
-      "dark": "ayuString",
-      "light": "ayuString"
-    },
-    "syntaxNumber": {
-      "dark": "ayuConstant",
-      "light": "ayuConstant"
-    },
-    "syntaxType": {
-      "dark": "ayuEntity",
-      "light": "ayuEntity"
-    },
-    "syntaxOperator": {
-      "dark": "ayuOperator",
-      "light": "ayuOperator"
-    },
-    "syntaxPunctuation": {
-      "dark": "ayuFg",
-      "light": "ayuUiFg"
-    },
-    "inputBackground": {
-      "dark": "ayuEditorBg",
-      "light": "ayuFg"
-    },
-    "InputBorder": {
-      "dark": "ayuBorder",
-      "light": "ayuGutter"
-    },
-    "InputBorderActive": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "inputPrompt": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "inputCursor": {
-      "dark": "ayuAccent",
-      "light": "ayuAccent"
-    },
-    "inputText": {
-      "dark": "ayuFg",
-      "light": "ayuUiFg"
-    }
+    "primary": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "secondary": { "dark": "ayuEntity", "light": "ayuEntity" },
+    "accent": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "error": { "dark": "ayuError", "light": "ayuError" },
+    "warning": { "dark": "ayuKeyword", "light": "ayuKeyword" },
+    "success": { "dark": "ayuAdded", "light": "ayuAdded" },
+    "info": { "dark": "ayuTag", "light": "ayuTag" },
+    "text": { "dark": "ayuFg", "light": "ayuUiFg" },
+    "textMuted": { "dark": "ayuUiFg", "light": "ayuGutter" },
+    "background": { "dark": "ayuBg", "light": "ayuFg" },
+    "backgroundPanel": { "dark": "ayuPanelBg", "light": "ayuGutter" },
+    "backgroundElement": { "dark": "ayuEditorBg", "light": "ayuUiFg" },
+    "border": { "dark": "ayuBorder", "light": "ayuGutter" },
+    "borderActive": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "borderSubtle": { "dark": "ayuBorder", "light": "ayuGutter" },
+    "diffAdded": { "dark": "ayuAdded", "light": "ayuAdded" },
+    "diffRemoved": { "dark": "ayuRemoved", "light": "ayuRemoved" },
+    "diffContext": { "dark": "ayuComment", "light": "ayuComment" },
+    "diffHunkHeader": { "dark": "ayuUiFg", "light": "ayuUiFg" },
+    "diffHighlightAdded": { "dark": "ayuAdded", "light": "ayuAdded" },
+    "diffHighlightRemoved": { "dark": "ayuRemoved", "light": "ayuRemoved" },
+    "diffAddedBg": { "dark": "#1a2618", "light": "#e4f0fb" },
+    "diffRemovedBg": { "dark": "#2a1a1a", "light": "#fbe4e4" },
+    "diffContextBg": { "dark": "ayuEditorBg", "light": "ayuGutter" },
+    "diffLineNumber": { "dark": "ayuGutter", "light": "ayuUiFg" },
+    "diffAddedLineNumberBg": { "dark": "#1a2618", "light": "#e4f0fb" },
+    "diffRemovedLineNumberBg": { "dark": "#2a1a1a", "light": "#fbe4e4" },
+    "markdownText": { "dark": "ayuFg", "light": "ayuUiFg" },
+    "markdownHeading": { "dark": "ayuKeyword", "light": "ayuKeyword" },
+    "markdownLink": { "dark": "ayuEntity", "light": "ayuEntity" },
+    "markdownLinkText": { "dark": "ayuTag", "light": "ayuTag" },
+    "markdownCode": { "dark": "ayuString", "light": "ayuString" },
+    "markdownBlockQuote": { "dark": "ayuComment", "light": "ayuComment" },
+    "markdownEmph": { "dark": "ayuMarkup", "light": "ayuMarkup" },
+    "markdownStrong": { "dark": "ayuFunc", "light": "ayuFunc" },
+    "markdownHorizontalRule": { "dark": "ayuBorder", "light": "ayuGutter" },
+    "markdownListItem": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "markdownListEnumeration": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "markdownImage": { "dark": "ayuConstant", "light": "ayuConstant" },
+    "markdownImageText": { "dark": "ayuString", "light": "ayuString" },
+    "markdownCodeBlock": { "dark": "ayuFg", "light": "ayuUiFg" },
+    "syntaxComment": { "dark": "ayuComment", "light": "ayuComment" },
+    "syntaxKeyword": { "dark": "ayuKeyword", "light": "ayuKeyword" },
+    "syntaxFunction": { "dark": "ayuFunc", "light": "ayuFunc" },
+    "syntaxVariable": { "dark": "ayuTag", "light": "ayuTag" },
+    "syntaxString": { "dark": "ayuString", "light": "ayuString" },
+    "syntaxNumber": { "dark": "ayuConstant", "light": "ayuConstant" },
+    "syntaxType": { "dark": "ayuEntity", "light": "ayuEntity" },
+    "syntaxOperator": { "dark": "ayuOperator", "light": "ayuOperator" },
+    "syntaxPunctuation": { "dark": "ayuFg", "light": "ayuUiFg" },
+    "inputBackground": { "dark": "ayuEditorBg", "light": "ayuFg" },
+    "InputBorder": { "dark": "ayuBorder", "light": "ayuGutter" },
+    "InputBorderActive": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "inputPrompt": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "inputCursor": { "dark": "ayuAccent", "light": "ayuAccent" },
+    "inputText": { "dark": "ayuFg", "light": "ayuUiFg" }
   }
 }

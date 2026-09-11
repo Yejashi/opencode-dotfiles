@@ -33,8 +33,8 @@ every agent that has the `skill` tool. Measured here: **~130 tokens per entry**
 with a ~300-char description. Only the body is lazy, loaded when the model calls
 the `skill` tool by name.
 
-At 64k context that means 100 flat skills would burn ~13k tokens — a fifth of
-the window — on every request, and hand a 35B IQ3 model a 100-item menu.
+At 128k context that means 100 flat skills would burn ~13k tokens — a tenth of
+the window — on every request, and hand a 35B IQ4_XS model a 100-item menu.
 Hence hubs.
 
 A skill with **no `description` is silently dropped** and never offered.

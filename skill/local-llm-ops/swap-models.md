@@ -25,8 +25,9 @@ curl -sS -H "Authorization: Bearer $(jq -r '.provider.local.options.apiKey' \
 
 What to expect:
 
-- A swap is an **unload plus a load: ~14 s measured**. A request that seems to
-  hang for ten-odd seconds after switching models is normal, not a fault.
+- A swap is an **unload plus a load: ~15 s measured** (IQ4_XS, 2026-09-10). A
+  request that seems to hang for ten-odd seconds after switching models is
+  normal, not a fault.
 - Models **idle-unload after 300 s** (`sleep-idle-seconds`) and reload on the
   next request. An idle router holds no VRAM — so the first request after a
   break also pays the load, and `models_llm` showing nothing resident is the
@@ -36,8 +37,10 @@ What to expect:
 Model ids come from the `models.ini` section names, and are exactly what
 OpenCode puts in the request's `model` field:
 
-- `qwen3.6-35b-a3b` — base, `Qwen3.6-35B-A3B-UD-IQ3_S.gguf`, 12.74 GiB
-- `qwen3.6-35b-a3b-heretic` — uncensored, `...uncensored-heretic.i1-IQ3_XS.gguf`, 13.49 GiB
+- `qwen3.6-35b-a3b` — base, `Qwen3.6-35B-A3B-UD-IQ4_XS.gguf`, 16.50 GiB,
+  `n-cpu-moe = 16`
+- `qwen3.6-35b-a3b-heretic` — uncensored,
+  `...uncensored-heretic.i1-IQ4_XS.gguf`, 17.43 GiB, `n-cpu-moe = 17`
 
 Renaming a section renames the model id, which breaks the `model` and
 `agent.*.model` fields in `~/.config/opencode/opencode.json`. Change both together.

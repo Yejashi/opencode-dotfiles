@@ -39,11 +39,19 @@ ss -ltnp | grep 8080
 
 ## The OOM drop-in
 
-`llama-router.service.d/` sets `MemoryHigh=12G`, and the unit sets
+`llama-router.service.d/memory.conf` sets `MemoryHigh=16G`, and the unit sets
 `OOMScoreAdjust=-200`. This is scar tissue: the router was killed by the kernel
-OOM killer at a 9.5 GiB peak during benchmarking on this 31 GiB machine.
+OOM killer at a 9.5 GiB peak during benchmarking on this 31 GiB machine (the
+old 8 GiB default prompt cache; `cache-ram` now caps it at 3 GiB).
 `MemoryHigh` makes the kernel reclaim against the cgroup before it gets that
 far, instead of killing the process.
+
+It was 12G until the 13 GiB VRAM cap moved expert weights to system RAM
+(`n-cpu-moe`). Those are file-backed pages of the model and count against the
+cgroup; at 12G, leftover page cache from the previously loaded model pinned the
+cgroup at the limit and the kernel throttled generation to half speed. If
+generation is slow, check `high` in the cgroup's `memory.events` — a counter
+that climbs during generation means the limit is too tight.
 
 If the router vanishes with no error in its own log, look for the kill rather
 than a llama.cpp bug:

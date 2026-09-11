@@ -1,6 +1,6 @@
 ---
 name: opencode-workspace
-description: Use when working on this machine's own OpenCode setup — the raw/orchestrate/implementer/tester agents, which model an agent runs on, authoring or debugging skills, permission rules, LSP config, the MEMORY.md protocol, or why a config change did not take effect. Use ONLY for configuring OpenCode itself, not for the user's application code.
+description: Use when working on this machine's own OpenCode setup — the orchestrator/worker agents, which model an agent runs on, authoring or debugging skills, permission rules, LSP config, the MEMORY.md protocol, or why a config change did not take effect. Use ONLY for configuring OpenCode itself, not for the user's application code.
 ---
 
 # This machine's OpenCode workspace
@@ -12,7 +12,7 @@ Two rules that cause most confusion here:
 
 1. **Config is not hot-reloaded.** Every change needs a full restart.
 2. **The local model is the constraint.** Anything below that assumes a ~35B
-   IQ3 quant at 64k context, not a frontier model.
+   IQ4_XS quant at 128k context running ~30 tok/s, not a frontier model.
 
 For generic OpenCode schema questions the built-in `customize-opencode` skill is
 authoritative. This skill covers what is specific to *this* setup and what was
@@ -24,7 +24,7 @@ learned by measuring it.
 
 Each entry below is a file in `/home/yejashi/.config/opencode/skill/opencode-workspace`. Read the one whose *use when* matches the task — do not read them all. This list is complete and authoritative; ignore the sampled file list appended by the skill tool.
 
-- **The agent roster and when to use each** — use when: choosing between build, orchestrate, raw, implementer, or tester; editing an agent definition; or deciding whether delegation is worth it
+- **The agent roster and when to use each** — use when: choosing between build, orchestrate-local, orchestrate-frontier, raw, or a worker (explore, implementer, operator, tester); editing an agent definition; or deciding whether delegation is worth it
   read `/home/yejashi/.config/opencode/skill/opencode-workspace/agent-roster.md`
 - **Add or edit a skill in this workspace** — use when: writing a new skill, adding a topic to an existing one, or the hub index looks out of date
   read `/home/yejashi/.config/opencode/skill/opencode-workspace/authoring-skills.md`

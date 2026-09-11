@@ -40,8 +40,8 @@ systemctl --user cat <unit>       # the effective unit, drop-ins included
 
 ## Units defined here
 
-- `llama-router.service` — the llama.cpp router (enabled). Has a `MemoryHigh=12G`
-  drop-in.
+- `llama-router.service` — the llama.cpp router (enabled). Has a `MemoryHigh=16G`
+  drop-in (see the local-llm-ops service topic for why 16G).
 - `qwen36.service`, `qwen38.service` — single-model fallbacks. The router
   declares `Conflicts=` on both; all three bind port 8080.
 - `elephant.service`, `openclaw-gateway.service` — unrelated.

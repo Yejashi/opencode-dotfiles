@@ -25,6 +25,7 @@ grep -l amdgpu /sys/class/drm/card*/device/uevent
 ```
 
 Baseline: the idle desktop holds ~2.1–2.5 GiB, leaving ~13.8 GiB for a model.
+Models are deliberately capped at 13 GiB — see the local-llm-ops VRAM budget.
 
 ## Building against HIP
 

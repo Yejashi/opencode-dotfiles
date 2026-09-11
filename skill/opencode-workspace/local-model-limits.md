@@ -39,11 +39,13 @@ no `</think>`.
 Symptom: the agent "gives up" or returns an empty-feeling answer on a hard task,
 with no error.
 
-Fix already applied — `limit.output` is **16384** for both models in
-`opencode.json`. `models.ini` also sets `reasoning-budget = 8192` as a
-belt-and-braces cap at the llama.cpp level. If you add a model, set both.
+Fix already applied — `limit.output` is **32768** for both models in
+`opencode.json` (matching the NixOS machine). `models.ini` also sets
+`reasoning-budget = 8192` as a belt-and-braces cap at the llama.cpp level. If
+you add a model, set both.
 
-Cost of the larger budget: 16384 tokens at ~77 tok/s is a ~3.5 minute
+Cost of the larger budget: with experts partly on the CPU (the 13 GiB VRAM
+cap), generation runs ~26–34 tok/s, so 32768 tokens is a ~16–21 minute
 worst-case single reply. That is the trade being made.
 
 ## "All tests pass" is not verification

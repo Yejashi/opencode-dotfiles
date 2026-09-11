@@ -12,7 +12,8 @@ Two layers, both under `/home/yejashi`:
 - `memory/<YYYY-MM-DD>-<topic>.md` — one note per piece of work, with the
   detail and the reasoning.
 
-`~/.config/opencode/AGENTS.md` points every session at both.
+Nothing loads these automatically — like the NixOS setup, there is no global
+`~/.config/opencode/AGENTS.md`. Read them when a task touches this machine.
 
 ## Reading
 

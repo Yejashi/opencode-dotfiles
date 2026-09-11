@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+"""Re-apply local fixes to the vendored harness-memory plugin.
+
+Any `npm install` under ~/.config/opencode replaces node_modules and silently
+reverts these. Run this afterwards; it is idempotent.
+
+  1. shared embedding cache
+     Upstream resolves the transformers model cache against the SESSION
+     directory, so at global plugin scope every project re-downloads ~130 MB of
+     `Xenova/multilingual-e5-small`. Repointed at ~/.harness-memory/models.
+
+  2. quiet logging
+     Upstream's plugin-runtime log()/warn() write to console.log/console.warn.
+     Inside the TUI those land on top of the rendered screen and corrupt it.
+     Redirected to ~/.harness-memory/plugin.log. CLI output from
+     `npx harness-memory ...` is deliberately left alone.
+
+  3. quiet global-db migration
+     runMigrations() defaults to `logger = console`, and the GLOBAL db call
+     passes no logger, so every session prints "Current schema version / Found
+     N migrations / All migrations completed" onto the TUI. The project-db call
+     already passes no-ops upstream; this makes the global one match.
+
+It also checks that sharp is built against its OWN bundled libvips; the system
+libvips makes every session print a VIPS-WARNING about vips-openslide.so.
+
+Usage:
+    harness-memory-repatch           apply whatever is missing
+    harness-memory-repatch --check   report only, exit 1 if anything is unpatched
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+ROOT = Path.home() / ".config/opencode/node_modules"
+TARGET = ROOT / "harness-memory/dist/plugin/index.js"
+SHARP = ROOT / "sharp"
+
+QUIET_LOG = '''function __hmFileLog(level, args) {
+  try {
+    const dir = join(homedir(), ".harness-memory");
+    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    const ts = new Date().toISOString().replace("T", " ").slice(0, 19);
+    const msg = args.map((a) => {
+      if (typeof a === "string") return a;
+      if (a instanceof Error) return a.stack || a.message;
+      try { return JSON.stringify(a); } catch { return String(a); }
+    }).join(" ");
+    appendFileSync(join(dir, "plugin.log"), `[${ts}] ${level} ${msg}\\n`, "utf-8");
+  } catch {}
+}
+function log(...args) {
+  __hmFileLog("LOG", args);
+}
+function warn(...args) {
+  __hmFileLog("WARN", args);
+}'''
+
+# name -> (already-applied probe, upstream pattern, replacement)
+PATCHES = {
+    "shared-embedding-cache": (
+        re.compile(r'resolve\d*\(homedir\(\), "\.harness-memory", "models"\)'),
+        re.compile(r'resolve(\d*)\(ctx\.directory, "\.harness-memory", "models"\)'),
+        r'resolve\1(homedir(), ".harness-memory", "models")',
+    ),
+    "quiet-global-migrate": (
+        re.compile(r'runMigrations\(globalDbPath, \{ log, error: warn \}\)'),
+        re.compile(r'runMigrations\(globalDbPath\);'),
+        'runMigrations(globalDbPath, { log, error: warn });',
+    ),
+    "quiet-logging": (
+        re.compile(r"function __hmFileLog\("),
+        re.compile(r'function log\(\.\.\.args\) \{\n  console\.log\(PLUGIN_LOG_PREFIX, \.\.\.args\);\n\}\n'
+                   r'function warn\(\.\.\.args\) \{\n  console\.warn\(PLUGIN_LOG_PREFIX, \.\.\.args\);\n\}'),
+        QUIET_LOG.replace("\\", "\\\\"),
+    ),
+}
+
+
+def check_sharp() -> int:
+    if not SHARP.is_dir():
+        return 0
+    vendor = SHARP / "vendor"
+    vendored = [d for d in vendor.iterdir() if d.is_dir()] if vendor.is_dir() else []
+    if vendored:
+        print(f"  sharp                  ok (bundled libvips {vendored[0].name})")
+        return 0
+    print("  sharp                  SYSTEM libvips — sessions will print a VIPS-WARNING\n"
+          "      fix: cd ~/.config/opencode && "
+          "SHARP_IGNORE_GLOBAL_LIBVIPS=1 npm rebuild sharp --foreground-scripts",
+          file=sys.stderr)
+    return 1
+
+
+def main() -> int:
+    check = "--check" in sys.argv[1:]
+    if not TARGET.is_file():
+        print(f"not installed: {TARGET}", file=sys.stderr)
+        return 2
+
+    text = TARGET.read_text(encoding="utf-8")
+    original = text
+    rc = 0
+
+    for name, (applied, pattern, repl) in PATCHES.items():
+        if applied.search(text):
+            print(f"  {name:22} ok")
+            continue
+        hits = len(pattern.findall(text))
+        if hits != 1:
+            print(f"  {name:22} CANNOT PATCH — expected 1 upstream match, found "
+                  f"{hits}; upstream changed, re-read the source", file=sys.stderr)
+            rc = 2
+            continue
+        if check:
+            print(f"  {name:22} MISSING", file=sys.stderr)
+            rc = max(rc, 1)
+            continue
+        text = pattern.sub(repl, text)
+        print(f"  {name:22} applied")
+
+    if text != original and not check:
+        backup = TARGET.with_suffix(".js.orig")
+        if not backup.exists():
+            backup.write_text(original, encoding="utf-8")
+        TARGET.write_text(text, encoding="utf-8")
+
+    return max(rc, check_sharp())
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

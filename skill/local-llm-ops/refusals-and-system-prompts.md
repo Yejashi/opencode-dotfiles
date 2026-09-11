@@ -42,4 +42,4 @@ for coding work.
 4. Only after those three should you suspect the quant or the weights.
 
 Note that switching to `raw` forces a model swap, because it is pinned to the
-heretic quant and only one model fits in VRAM. Expect the ~14 s load.
+heretic quant and only one model is resident at a time. Expect the ~15 s load.

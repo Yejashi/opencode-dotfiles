@@ -1,39 +1,95 @@
 # opencode-dotfiles
 
-My [OpenCode](https://github.com/opencode-ai/opencode) configuration — the agents, prompts, and settings I use to shape how the AI assistant behaves.
+My [OpenCode](https://opencode.ai) configuration for the Arch machine. It is
+the same setup my NixOS machine deploys through home-manager
+(`nixOS-Configuration/users/yejashi/opencode`), adapted only where the hardware
+differs.
 
-## What's here
+This repo **is** `~/.config/opencode` — the directory is a symlink to it, so
+every change made here (or by OpenCode itself) lands in the working tree and
+just needs a commit and push.
 
-- **opencode.json** — Main config. Defines the local LLM provider, LSP (ruff), and four agent definitions (`raw`, `orchestrate`, `implementer`, `tester`).
-- **opencode.jsonc** — Minimal placeholder config.
-- **prompts/** — Prompt files that each agent loads via `{file:...}` references.
+## Layout
 
-| Agent | Role |
-|---|---|
-| `raw` | Unfiltered chat / creative writing. No tools, no coding-agent system prompt. |
-| `orchestrate` | Plans and delegates to subagents. Never edits code directly. |
-| `implementer` | Executes one specific, already-decided code change. |
-| `tester` | Runs commands and reports pass/fail. Never edits files. |
+| Path | What it is |
+| --- | --- |
+| `opencode.json` | Providers, models, LSP, agents, server plugin |
+| `tui.json` | TUI plugin (token tracker), keybinds, attention |
+| `prompts/` | Agent prompts, loaded via `{file:./prompts/<name>.md}` |
+| `plugins/token-tracker.tsx` | Sidebar footer with live token/speed/cost stats |
+| `themes/ayu-dark.json` | TUI theme |
+| `ORCHESTRATION.md` | How the orchestrator/worker split works |
+| `skill/` | Hub-style skills (see `skill/README.md`) |
+| `command/` | harness-memory slash commands |
+| `bin/` | `skills-build`, `skills-import-awesome`, `harness-memory-repatch` |
 
-## Setup
+## Agents
 
-1. Clone this repo into your OpenCode config directory:
-   ```bash
-   mkdir -p ~/.config/opencode
-   cp -r opencode-dotfiles/* ~/.config/opencode/
-   ```
-2. Install the plugin dependency:
-   ```bash
-   cd ~/.config/opencode && npm install
-   ```
-3. Edit `opencode.json` and replace `"YOUR_API_KEY_HERE"` with your actual API key for your local LLM endpoint.
-4. Restart OpenCode.
+| Agent | Mode | Model | Tools |
+| --- | --- | --- | --- |
+| `orchestrate-local` | primary | local Qwen | glob, grep, webfetch, task, todowrite |
+| `orchestrate-frontier` | primary | `openai/gpt-5.6-terra` | same as above |
+| `raw` | primary | local Qwen heretic | none |
+| `explore` | subagent | local Qwen | read, glob, grep |
+| `implementer` | subagent | local Qwen | read, write, edit, patch |
+| `operator` | subagent | local Qwen | bash (state-changing, exact commands) |
+| `tester` | subagent | local Qwen | bash (read-only inspection, builds, tests) |
 
-## Notes
+Both orchestrators may only delegate to the four workers. Title, summary, and
+compaction also run locally, so the frontier API never sees worker tool loops.
+See `ORCHESTRATION.md`.
 
-- This repo is intentionally minimal — it contains only config and prompt files. Dependencies (`node_modules/`) are excluded.
-- The `AGENTS.md` instruction file lives in your home directory, not in this repo.
+## Setup on Arch
 
-## License
+```bash
+git clone git@github.com:Yejashi/opencode-dotfiles.git ~/Documents/repos/opencode-dotfiles
+ln -s ~/Documents/repos/opencode-dotfiles ~/.config/opencode
 
-Feel free to fork and adapt.
+cd ~/.config/opencode
+npm install                  # harness-memory + @opencode-ai/plugin
+bin/harness-memory-repatch   # re-apply local fixes (quiet TUI logging etc.)
+```
+
+Needed on `PATH` for the LSP block: `ruff`, `clangd`, `bash-language-server`.
+
+For `orchestrate-frontier`, export the key from private shell config (never
+from this repo):
+
+```bash
+export OPENAI_API_KEY="..."
+```
+
+## Differences from the NixOS copy
+
+Shared verbatim: `prompts/`, `plugins/`, `themes/`, `ORCHESTRATION.md`,
+`opencode.jsonc`, and the whole agent roster. `opencode.json` matches too —
+same 128k context, output, and compaction settings — except:
+
+- **VRAM cap (server side, not in this repo)** — the same IQ4_XS models, but
+  `~/local-ai/router/models.ini` keeps each one under 13 GiB of VRAM with
+  `n-cpu-moe` (the expert weights of 16 layers for base, 17 for heretic, live
+  in system RAM), so generation runs ~28–31 tok/s. Its `ctx-size = 131072`
+  must match `limit.context`. The router unit's `MemoryHigh` is 16G to hold
+  those experts without throttling.
+- **Router API key** — `~/local-ai/router/start-router.sh` reads
+  `.provider.local.options.apiKey` from this file with `jq` and passes it to
+  `llama-server --api-key`. Keep that key path intact.
+- **`raw` uses the heretic model**, which only the Arch router serves.
+- **harness-memory** loads from `./node_modules` (installed by `npm install`,
+  patched by `bin/harness-memory-repatch`) instead of the NixOS package-cache
+  path, because this directory is writable.
+- **Extra skills and commands** under `skill/` and `command/`.
+
+To check the shared files for drift:
+
+```bash
+nix=~/Documents/repos/nixOS-Configuration/users/yejashi/opencode
+for p in prompts plugins themes ORCHESTRATION.md opencode.jsonc; do
+  diff -r "$nix/$p" ~/.config/opencode/"$p"
+done
+```
+
+## Not in git
+
+`node_modules/`, lockfiles, backups, and the machine-local story downloader
+(`bin/story-dl`, `story-dl.ini`, `skill/story-archive/`).

@@ -23,29 +23,39 @@ whole mechanism, there is no hidden default.
 agent.model  ??  { model of the parent assistant message }
 ```
 
-An unpinned subagent inherits the model of whatever spawned it. So
-`orchestrate` on the base model produces `implementer` runs on the base model,
-automatically.
+An unpinned subagent inherits the model of whatever spawned it. Under
+`orchestrate-frontier` that would be GPT-5.6 Terra — every worker's tool loop
+would go to the paid API. That is why all four workers here are pinned.
 
 ## Variant inheritance
 
 The task tool passes `variant: agent.model ? undefined : parentVariant`. A
 subagent with **no** model pin inherits the parent's variant; pinning a model
-resets the variant to the model default. One more reason to leave subagents
-unpinned.
+resets the variant to the model default.
 
 ## Current state here
 
-`orchestrate`, `implementer`, and `tester` are unpinned and follow the picker.
-`raw` is pinned to `local/qwen3.6-35b-a3b-heretic` on purpose.
+Every agent is pinned:
 
-That pin has a cost worth remembering: only one ~13 GiB model fits in 16 GiB of
-VRAM, so switching to `raw` evicts whatever is loaded and pays a ~14 s swap.
+| Agent | Model |
+| --- | --- |
+| `orchestrate-local` | `local/qwen3.6-35b-a3b` |
+| `orchestrate-frontier` | `openai/gpt-5.6-terra` (reasoningEffort medium) |
+| `explore`, `implementer`, `operator`, `tester` | `local/qwen3.6-35b-a3b` |
+| `compaction`, `summary` | `local/qwen3.6-35b-a3b` |
+| `title` | `local-title/qwen3.6-35b-a3b` — same server, 256 output tokens |
+| `raw` | `local/qwen3.6-35b-a3b-heretic`, on purpose |
+
+`small_model` is also local, so no metadata work reaches the frontier API.
+
+The `raw` pin has a cost worth remembering: only one model is resident at a
+time (each is capped at 13 GiB of VRAM), so switching to `raw` evicts whatever
+is loaded and pays a ~15 s swap.
 
 ## Checking it
 
 ```bash
-opencode debug agent orchestrate     # resolved config for one agent
-opencode debug config                # the whole merged config
-models_llm                           # which model the router has resident
+opencode debug agent orchestrate-local   # resolved config for one agent
+opencode debug config                    # the whole merged config
+models_llm                               # which model the router has resident
 ```

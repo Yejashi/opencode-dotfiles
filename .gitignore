@@ -1,7 +1,19 @@
-node_modules
+# dependencies — restore with: npm install && bin/harness-memory-repatch
+node_modules/
 package-lock.json
 bun.lock
-# opencode backup files
-opencode.json.bak-*
+
+# machine-local, never committed (story-dl.ini can hold site logins)
+story-dl.ini
+bin/story-dl
+skill/story-archive/
+
+# generated files and backups
+__pycache__/
+.harness-memory/
 opencode.json.preoutput
-tui.bak-*
+*.bak
+*.bak-*
+*.orig
+*.orig-*
+*.v[0-9]

@@ -19,8 +19,8 @@ every agent holding the `skill` tool. Measured on this corpus: **~646 tokens
 for 5 entries, ~130 each** — a ~300-char description dominates, the tags and
 absolute path add ~35. Only the body is lazy (~24.8k tokens held back here).
 
-A flat corpus of 100 skills would therefore cost ~7–9k tokens of a 64k window on
-every request, and hand a 35B IQ3 model a 100-item menu. Hubs make the always-on
+A flat corpus of 100 skills would therefore cost ~7–9k tokens of a 128k window on
+every request, and hand a 35B IQ4_XS model a 100-item menu. Hubs make the always-on
 cost proportional to the number of *domains* instead of the number of documents:
 4 hubs ≈ 500 tokens whether they hold 25 leaves or 250. Tightening a description
 is the cheapest lever available — every char is spent on every request.
