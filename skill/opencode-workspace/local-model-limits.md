@@ -45,8 +45,9 @@ Fix already applied — `limit.output` is **32768** for both models in
 you add a model, set both.
 
 Cost of the larger budget: with experts partly on the CPU (the 13 GiB VRAM
-cap), generation runs ~26–34 tok/s, so 32768 tokens is a ~16–21 minute
-worst-case single reply. That is the trade being made.
+cap), generation runs ~33–35 tok/s warm, so 32768 tokens of fresh text is a
+~16 minute worst-case single reply (rewrites of existing text run ~4x faster
+on the base model via n-gram speculative decoding). That is the trade being made.
 
 ## "All tests pass" is not verification
 

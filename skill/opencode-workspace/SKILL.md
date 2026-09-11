@@ -12,7 +12,7 @@ Two rules that cause most confusion here:
 
 1. **Config is not hot-reloaded.** Every change needs a full restart.
 2. **The local model is the constraint.** Anything below that assumes a ~35B
-   IQ4_XS quant at 128k context running ~30 tok/s, not a frontier model.
+   IQ4_XS quant at 128k context running ~34 tok/s, not a frontier model.
 
 For generic OpenCode schema questions the built-in `customize-opencode` skill is
 authoritative. This skill covers what is specific to *this* setup and what was

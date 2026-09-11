@@ -34,7 +34,7 @@ Each entry below is a file in `/home/yejashi/.config/opencode/skill/local-llm-op
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/service-control.md`
 - **Switch which model is served** — use when: changing models from the OpenCode picker, a model id 404s, the wrong model answers, or you want to know what is loaded right now
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/swap-models.md`
-- **VRAM budget and what to do when a model will not fit** — use when: a model fails to load, output collapses to a few tokens per second, you are choosing a quant or n-cpu-moe value, or you are adding a model
+- **VRAM budget and what to do when a model will not fit** — use when: a model fails to load, output collapses to a few tokens per second, you are choosing a quant or n-cpu-moe value, tuning generation speed, or adding a model
   read `/home/yejashi/.config/opencode/skill/local-llm-ops/vram-budget.md`
 
 <!-- END GENERATED INDEX -->

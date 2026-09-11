@@ -44,7 +44,13 @@ top-p     = 0.95
 min-p     = 0.0
 temp      = 1.0
 n-cpu-moe = 16
+spec-type = ngram-mod
 ```
+
+`spec-type = ngram-mod` drafts tokens from n-grams already in the context — no
+draft model, +16 MiB VRAM. Rewriting existing text (file edits, tool
+arguments) runs ~4x faster; fresh prose is ~3% slower, which is why only the
+base section sets it and heretic (used by `raw` for creative writing) does not.
 
 Sampling here is the Qwen3.6-recommended set. Note that OpenCode *also* sends
 `temperature` from `provider.local.models.<id>.options` — the request value

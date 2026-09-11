@@ -68,7 +68,8 @@ same 128k context, output, and compaction settings — except:
 - **VRAM cap (server side, not in this repo)** — the same IQ4_XS models, but
   `~/local-ai/router/models.ini` keeps each one under 13 GiB of VRAM with
   `n-cpu-moe` (the expert weights of 16 layers for base, 17 for heretic, live
-  in system RAM), so generation runs ~28–31 tok/s. Its `ctx-size = 131072`
+  in system RAM), so generation runs ~33–35 tok/s. The base model also uses
+  n-gram speculative decoding, which makes rewriting existing text ~4x faster. Its `ctx-size = 131072`
   must match `limit.context`. The router unit's `MemoryHigh` is 16G to hold
   those experts without throttling.
 - **Router API key** — `~/local-ai/router/start-router.sh` reads
