@@ -14,7 +14,7 @@ named sections are model ids and override it.
 | --- | --- | --- |
 | `device` | `ROCm0` | The 9070 XT. |
 | `n-gpu-layers` | `all` | Every layer goes to the GPU; each section's `n-cpu-moe` then pulls selected expert weights back to system RAM. |
-| `ctx-size` | `131072` | Matches the `limit.context` in `opencode.json` (and the NixOS machine). Change both together. |
+| `ctx-size` | `131072` | Matches the `limit.context` in `opencode.json`. Change both together. (The NixOS machine runs 65536 — it has 12 GiB of VRAM, not 16, and its observed peak was ~12k tokens.) |
 | `parallel` | `1` | One slot; concurrent requests queue rather than split the KV cache. |
 | `flash-attn` | `on` | Required for the KV quantisation below to pay off. |
 | `cache-type-k` / `cache-type-v` | `q8_0` | Quantised KV cache, ~0.7 GiB per 64k — keeps the 128k cache at ~1.4 GiB of VRAM. |
@@ -33,6 +33,35 @@ entire output budget reasoning and never emit the tool call, which is exactly
 how a large benchmark run broke. Capping thinking at 8192 leaves the rest of the
 output budget (`limit.output` = 32768) for the answer. It only binds in that
 pathological case — normal turns think far less.
+
+## Repetition control is not configured
+
+**Not currently set in the ini — this is a known gap, not a description of
+current state.** llama.cpp ships every repetition penalty disabled
+(`repeat-penalty` 1.0, `presence-penalty` 0.0, `dry-multiplier` 0.0), and the
+ini does not turn any of them on. Nothing can break a degenerate loop once one
+starts: repeating becomes the highest-probability continuation and stays that
+way until the output cap.
+
+`spec-type = ngram-mod` raises the stakes, because an n-gram drafter proposes
+tokens copied from earlier context. It does not cause loops — verification
+still gates every token — but once one starts it is drafted at full acceptance,
+so a loop burns the output budget faster than normal generation would.
+
+If loops appear, add to `[*]`:
+
+```ini
+dry-multiplier     = 0.8
+dry-base           = 1.75
+dry-allowed-length = 8
+dry-penalty-last-n = 4096
+```
+
+DRY penalises *continuing* a verbatim repeat. `allowed-length = 8` means a
+sequence must match 8+ tokens before any penalty applies, and the default
+sequence breakers include newline, so repeated code lines are unaffected.
+Prefer it over `presence-penalty`, which penalises any already-seen token and
+degrades code output.
 
 ## Per-model sections
 

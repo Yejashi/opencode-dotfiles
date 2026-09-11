@@ -22,7 +22,7 @@
           },
           "options": {
             "reasoningEffort": "medium",
-            "temperature": 0.4,
+            "temperature": 0.7,
             "parallel_tool_calls": true
           },
           "variants": {
@@ -48,7 +48,7 @@
           },
           "options": {
             "reasoningEffort": "medium",
-            "temperature": 0.4,
+            "temperature": 0.7,
             "parallel_tool_calls": true
           },
           "variants": {
@@ -80,10 +80,10 @@
           "name": "Qwen3.6 35B-A3B (short metadata)",
           "limit": {
             "context": 131072,
-            "output": 256
+            "output": 512
           },
           "options": {
-            "reasoningEffort": "none",
+            "chat_template_kwargs": { "enable_thinking": false },
             "temperature": 0.2,
             "parallel_tool_calls": false
           }
