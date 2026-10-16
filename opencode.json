@@ -116,6 +116,12 @@
       "extensions": [".sh", ".bash", ".bats"]
     }
   },
+  "mcp": {
+    "libgen": {
+      "type": "local",
+      "command": ["/home/yejashi/.local/bin/libgen-mcp"]
+    }
+  },
   "agent": {
     "compaction": {
       "model": "local/qwen3.6-35b-a3b"
